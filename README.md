@@ -37,6 +37,9 @@
 * **최종 모델 선정**: **XGBoost** (가장 우수한 성능 기록)
 ![ROC_AUC](Best_Model_Choice.png)
 ![Final_Model](Final_Model.png)
+* **Shap 분석**: feature별 영향력 분석
+![Shap (1)](Shap(1).png)
+![Shap (2)](Shap(2).png)
 
 ## 5. 핵심 성과 (Results)
 * **최종 성능**: **ROC-AUC 0.823** 달성 (Base Model 대비 0.3 향상)
@@ -48,6 +51,9 @@
 1. **투자 전략**: ESG 등급 예측을 통한 기업의 미래 투자 가치 평가
 2. **리스크 관리**: 등급 하락 조기 예측을 통한 리스크 관리 지표 활용
 3. **기업 컨설팅**: 등급 상승을 위한 구체적인 개선 지표(여성 임원 비율 등) 제안
+
+## 7. 대시보드 (Dashboard)
+![streamlit Dashboard](streamlit_video.mp4)
 
 ---
 *자세한 분석 과정과 코드는 상단의 `.ipynb` 파일 또는 첨부된 [PDF 포트폴리오](./PARK_Portfolio.pdf)를 참고해 주세요.*
