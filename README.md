@@ -35,8 +35,6 @@
 * **전략**: 회귀 모델에서 **다중 분류(Multi-class Classification)** 모델로 전환하여 실무적 활용도 제고
 * **알고리즘 비교**: Logistic, XGBoost, Random Forest, SVM 등 비교 검증
 * **최종 모델 선정**: **XGBoost** (가장 우수한 성능 기록)
-![ROC_AUC](Best_Model_Choice.png)
-![Final_Model](Final_Model.png)
 
 ## 5. 핵심 성과 (Results)
 * **최종 성능**: **ROC-AUC 0.823** 달성 (Base Model 대비 0.3 향상)
