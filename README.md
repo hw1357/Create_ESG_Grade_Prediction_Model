@@ -54,6 +54,7 @@
 
 ## 7. 대시보드 (Dashboard)
 ![streamlit_video-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/e549f319-a96e-4851-9743-83ccd4994747)
+![streamlit_video-ezgif com-video-to-gif-converter(2)](https://github.com/user-attachments/assets/afb90c87-94b9-49fc-b0b7-1eed8b2ac454)
 
 ---
 *자세한 분석 과정과 코드는 상단의 `.ipynb` 파일 또는 첨부된 [PDF 포트폴리오](./PARK_Portfolio.pdf)를 참고해 주세요.*
