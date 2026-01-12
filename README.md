@@ -19,24 +19,24 @@
 * **대상**: 평가 기업 731개 (기존 635개에서 확장)
 * **주요 변수 (Features)**:
     * 재무 지표: 자산규모(Size), 부채비율(LEV), 외국인 지분율(FOR), 연구개발비(R&D) 등
-    * ![Base_features](X_features.png)
+    ![Base_features](X_features.png)
     * **파생 변수 추가**: 정성적 요소를 반영하기 위해 '기타 판매비와 관리비', '남녀 임금 격차', '임원 여성 비율' 등 추가 수집
-    * ![Final_features](X_features_plus.png)
+    ![Final_features](X_features_plus.png)
 
 ## 4. 모델링 및 성능 개선 (Modeling)
 ### 4-1. Base Model (다중회귀분석)
-* ![Correlation Heatmap](heatmap.png)
+![Correlation Heatmap](heatmap.png)
 * **결과**: 설명력($R^2$) **0.440** 달성 (기존 논문 대비 약 2배 성능 향상)
 * **X_features 추가**: 설명력($R^2$) **0.5717** 달성
 * **한계**: $R^2$ 점수의 정체 및 회귀 분석의 한계점 도달 확인 (Learning Curve 분석)
-* ![Learning_Curve](Learning_Curve.png)
+![Learning_Curve](Learning_Curve.png)
 
 ### 4-2. Final Model (분류 모델 전환)
 * **전략**: 회귀 모델에서 **다중 분류(Multi-class Classification)** 모델로 전환하여 실무적 활용도 제고
 * **알고리즘 비교**: Logistic, XGBoost, Random Forest, SVM 등 비교 검증
 * **최종 모델 선정**: **XGBoost** (가장 우수한 성능 기록)
-* ![ROC_AUC](Best_Model_Choice.png)
-* ![Final_Model](Final_Model.png)
+![ROC_AUC](Best_Model_Choice.png)
+![Final_Model](Final_Model.png)
 
 ## 5. 핵심 성과 (Results)
 * **최종 성능**: **ROC-AUC 0.861** 달성 (Base Model 대비 0.4 향상)
