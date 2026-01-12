@@ -53,7 +53,8 @@
 3. **기업 컨설팅**: 등급 상승을 위한 구체적인 개선 지표(여성 임원 비율 등) 제안
 
 ## 7. 대시보드 (Dashboard)
-![streamlit Dashboard](streamlit_video.mp4)
+<video src="streamlit_video.mp4" controls="controls" style="max-width: 100%;">
+</video>
 
 ---
 *자세한 분석 과정과 코드는 상단의 `.ipynb` 파일 또는 첨부된 [PDF 포트폴리오](./PARK_Portfolio.pdf)를 참고해 주세요.*
