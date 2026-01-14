@@ -25,7 +25,7 @@ XGBoost Classifier를 활용하여 검증한 결과, 안정적인 예측 성능�
 ## 3. 분석 결과 시각화
 
 ### 📊 Macro-average ROC Curve
-모델의 종합적인 판별 능력을 나타내는 ROC 커브입니다. (Macro AUC 0.825)
+모델의 종합적인 판별 능력을 나타내는 ROC 커브입니다. (Macro AUC 0.881)
 ![ROC Curve](./roc_macro_only.png)
 
 ### 🧩 Confusion Matrix (혼동 행렬)
