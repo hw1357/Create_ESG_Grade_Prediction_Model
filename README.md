@@ -1,8 +1,8 @@
 # 📊 재무 정보를 활용한 기업 ESG 등급 예측 모델 제작
 **Predicting Corporate ESG Ratings Using Financial Information**
 ## 👥 Contributors
-- 박현우 (@hw1357): Data Analysis, Feature Engineering, Modeling, Dashboard coding
-- 민선아 (@Manyong1204): Data Collection, Feature Engineering, Modeling, Dashboard design
+- 박현우 (@hw1357): Data Analysis, Data Collection, Feature Engineering, Modeling, Dashboard coding
+- 민선아 (@Manyong1204): Data Collection, Feature Engineering, Modeling, Advanced Modeling & Optimization, Dashboard design
 
 
 ## 1. 프로젝트 개요 (Overview)
