@@ -2,7 +2,7 @@
 **Predicting Corporate ESG Ratings Using Financial Information**
 ## 👥 Contributors
 - 박현우 (@hw1357): Data Analysis, Feature Engineering, Modeling, Dashboard coding
-- 민선아 (@Manyong1204): Data Collection, Feature Engineering, Dashboard design
+- 민선아 (@Manyong1204): Data Collection, Feature Engineering, Modeling, Dashboard design
 
 
 ## 1. 프로젝트 개요 (Overview)
