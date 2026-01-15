@@ -912,19 +912,35 @@ with tab_pred:
                         feature_names=new_feature_names
                     )
 
-                    with st.expander(f"📝 {model_choice} 상세 분석 Waterfall", expanded=True):
-                        # [수정됨] 복잡한 폰트 설정 제거 -> 라이브러리로 자동 해결
+                    with st.expander(f"📝 {pred_grade} 상세 분석 Waterfall", expanded=True):
+                        # 1. 한글 패치 및 시각화 라이브러리 설정
                         import koreanize_matplotlib
+                        import matplotlib.pyplot as plt
                         
-                        # 마이너스 기호 깨짐 방지 (koreanize_matplotlib가 처리하지만 명시적으로 안전장치)
+                        # [핵심] 마이너스 부호 깨짐 해결 설정 (False로 설정해야 함)
                         plt.rcParams['axes.unicode_minus'] = False 
-
-                        total_features = len(new_values)
-                        fig, ax = plt.subplots(figsize=(10, 0.6 * total_features + 2))
-                        shap.plots.waterfall(exp, show=False, max_display=total_features)
+                        plt.rc('font', family='NanumGothic') # 폰트 강제 재설정 (안전장치)
                         
-                        # 이제 한글 타이틀이 정상적으로 보입니다
-                        plt.title(f"{curr_grade} 등급 판정 핵심 요인 (변수 {total_features}개)", fontsize=15, pad=30)
+                        # 2. SHAP 값 준비
+                        explainer = shap.TreeExplainer(model)
+                        shap_values = explainer(input_df)
+
+                        # 첫 번째 데이터(입력값)에 대한 shap value 추출
+                        exp = shap_values[0, :, pred_idx]
+                        
+                        new_values = input_df.iloc[0]
+                        total_features = len(new_values)
+                        
+                        # 3. 그래프 그리기
+                        fig, ax = plt.subplots(figsize=(10, 0.6 * total_features + 2))
+                        
+                        # SHAP 그래프 생성
+                        shap.plots.waterfall(exp, show=False, max_display=10)
+                        
+                        # 타이틀 설정
+                        plt.title(f"{pred_grade} 등급 판정 핵심 요인 (변수 {total_features}개)", fontsize=15, pad=30)
+                        
+                        # 4. 스트림릿에 출력
                         st.pyplot(fig)
                         plt.close(fig)
 
