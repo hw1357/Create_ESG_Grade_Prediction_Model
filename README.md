@@ -4,6 +4,8 @@
 - 박현우 (@hw1357): Data Analysis, Data Collection, Feature Engineering, Modeling, Dashboard coding
 - 민선아 (@Manyong1204): Data Collection, Feature Engineering, Modeling, Advanced Modeling & Optimization, Dashboard design
 
+## 0. 배포
+* **배포 사이트:** [바로가기 클릭](https://createesggradepredictionmodel-awz4b6kpfrpprldn7stphm.streamlit.app/)
 
 ## 1. 프로젝트 개요 (Overview)
 * **목표**: 한국 ESG 기준원의 평가 등급을 바탕으로 재무 지표와 연계한 등급 예측 모델 제작
@@ -57,9 +59,9 @@
 3. **기업 컨설팅**: 등급 상승을 위한 구체적인 개선 지표(여성 임원 비율 등) 제안
 
 ## 7. 대시보드 (Dashboard)
-![streamlit_video](https://github.com/user-attachments/assets/7407bf23-d4bd-4bf8-b812-38ce6d0404db)
-![streamlit_video (1)](https://github.com/user-attachments/assets/96be5cba-6e73-48e5-823d-fb3b0673c409)
-
+![streamlit_video (2)](https://github.com/user-attachments/assets/4797c60d-2bec-4e01-aa9d-194c786d7010)
+![streamlit_video (3)](https://github.com/user-attachments/assets/e41028d7-1dd6-4b6c-ad2a-e03fc1bd1260)
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://createesggradepredictionmodel-awz4b6kpfrpprldn7stphm.streamlit.app/)
 
 ---
 #### 자세한 분석 과정과 코드는 상단의 `.ipynb` 파일 또는 첨부된 [PDF 포트폴리오](./PARK_Portfolio.pdf)를 참고해 주세요.
