@@ -744,7 +744,7 @@ with tab_pred:
                 btn_run = st.form_submit_button("시뮬레이션 실행")
             
             if btn_run:
- # ----------------------------------------------------------------------------------------               
+# ----------------------------------------------------------------------------------------               
                 # 3. 모델 선택 로직
                 if is_extended:
                     current_model = models.get('ext_model')
@@ -767,8 +767,13 @@ with tab_pred:
                 if is_extended:
                     model_in["ESG_lag"] = esg_lag_val
                     model_in["A_SIZE_FOR_inter"] = float(inputs["A_SIZE"]) * float(inputs["FOR"])
-# ----------------------------------------------------------------------------------------
 
+
+                # 스케일러가 알고 있는 순서대로 정렬 후 변환
+                model_in_aligned = model_in.reindex(columns=scaler_obj.feature_names_in_, fill_value=0)
+                X_scaled = scaler_obj.transform(model_in_aligned)
+
+# ----------------------------------------------------------------------------------------
 
                 prob = final_model.predict_proba(model_in)[0]
                 curr_idx = np.argmax(prob)
@@ -913,36 +918,18 @@ with tab_pred:
                     )
 
                     with st.expander(f"📝 {model_choice} 상세 분석 Waterfall", expanded=True):
-                        # 1. 한글 패치 및 시각화 라이브러리 설정
+                        # [FIX] Korean Font and Minus Sign Fix
                         import koreanize_matplotlib
-                        import matplotlib.pyplot as plt
-                        
-                        # [핵심] 마이너스 부호 깨짐 해결 설정 (False로 설정해야 함)
                         plt.rcParams['axes.unicode_minus'] = False 
-                        plt.rc('font', family='NanumGothic') # 폰트 강제 재설정 (안전장치)
                         
-                        # 2. SHAP 값 준비
-                        explainer = shap.TreeExplainer(model)
-                        shap_values = explainer(input_df)
-
-                        # 첫 번째 데이터(입력값)에 대한 shap value 추출
-                        exp = shap_values[0, :, pred_idx]
-                        
-                        new_values = input_df.iloc[0]
                         total_features = len(new_values)
-                        
-                        # 3. 그래프 그리기
                         fig, ax = plt.subplots(figsize=(10, 0.6 * total_features + 2))
-                        
-                        # SHAP 그래프 생성
-                        shap.plots.waterfall(exp, show=False, max_display=10)
-                        
-                        # 타이틀 설정
-                        plt.title(f"{model_choice} 등급 판정 핵심 요인 (변수 {total_features}개)", fontsize=15, pad=30)
-                        
-                        # 4. 스트림릿에 출력
+                        shap.plots.waterfall(exp, show=False, max_display=total_features)
+                        plt.title(f"{curr_grade} 등급 판정 핵심 요인 (변수 {total_features}개)", fontsize=15, pad=30)
                         st.pyplot(fig)
                         plt.close(fig)
+
+
 
                     # ---------------------------------------------------------
                     # 5. 전략 제안 자동 생성
