@@ -58,6 +58,65 @@ class RollingEnsembleClassifier:
         proba = self.predict_proba(X)
         return self.classes_[np.argmax(proba, axis=1)]
 
+
+
+# ---------------------------------------------------------------------------------
+# [전략 제안 딕셔너리 - 19개 지표 대응]
+STRATEGIC_ADVICE = {
+    "TQ": {"pos": "시장 가치(Tobin's Q)가 높아 미래 성장성에 대한 신뢰가 두텁습니다.", "neg": "자산 대비 시장 가치가 저평가되어 있습니다. IR 강화가 필요합니다."},
+    "ROA": {"pos": "우수한 자산 효율성(ROA)이 ESG 경영의 토대가 됩니다.", "neg": "수익성 저하가 ESG 투자 여력을 제한하고 있습니다."},
+    "SGR": {"pos": "견고한 매출 성장세가 기업 활력을 증명합니다.", "neg": "성장 정체 리스크가 존재합니다. 비즈니스 모델 전환을 검토하세요."},
+    "LEV": {"pos": "안정적인 부채비율이 재무 리스크를 방어합니다.", "neg": "높은 부채비율이 재무 불안정성을 키우고 있습니다."},
+    "A_SIZE": {"pos": "규모의 경제를 갖춘 대기업으로서 ESG 역량이 우수합니다.", "neg": "작은 자산 규모로 인한 ESG 관리 한계를 효율화로 극복해야 합니다."},
+    "W_YEAR": {"pos": "높은 근속연수는 인적 자원의 안정성을 뜻합니다.", "neg": "짧은 근속연수는 인력 유출 리스크를 시사합니다."},
+    "Fe_R": {"pos": "여성 직원 비율이 높아 다양성 측면에서 긍정적입니다.", "neg": "인력 구조의 다양성이 부족합니다. 채용 정책을 점검하세요."},
+    "Re_R": {"pos": "높은 정규직 비율은 고용의 질이 우수함을 뜻합니다.", "neg": "비정규직 비중이 높아 고용 안정성 리스크가 있습니다."},
+    "SA": {"pos": "우수한 임금 수준이 인재 확보 경쟁력을 높입니다.", "neg": "낮은 임금 수준은 인재 이탈 원인이 될 수 있습니다."},
+    "Pay_Gap": {"pos": "낮은 임금 격차는 조직 내 형평성이 높음을 시사합니다.", "neg": "사내 임금 격차가 커 조직 결속력을 해칠 수 있습니다."},
+    "FOR": {"pos": "높은 외국인 지분율이 경영 투명성을 보장합니다.", "neg": "외국인 투자자의 관심도가 낮습니다. 영문 공시를 확대하세요."},
+    "MSE": {"pos": "적절한 대주주 지분율이 경영 안정성을 제공합니다.", "neg": "지분 구조가 지나치게 집중되어 이사회의 독립성이 우려됩니다."},
+    "DIR_OUT": {"pos": "높은 사외이사 비율이 견제와 균형을 돕고 있습니다.", "neg": "사외이사 비중이 낮아 이사회의 독립성이 우려됩니다."},
+    "DIR_FE": {"pos": "경영진 내 여성 비율이 높아 의사결정 다양성이 확보되었습니다.", "neg": "의사결정 기구의 성별 다양성이 부족합니다."},
+    "SGAE_R": {"pos": "효율적인 판관비 관리가 수익성 개선으로 이어집니다.", "neg": "매출 대비 판관비 비중이 높아 운영 효율화가 시급합니다."},
+    "DIV": {"pos": "주주 환원 정책이 우수하여 G등급에 긍정적입니다.", "neg": "적극적인 배당 정책으로 주주 신뢰를 회복하세요."},
+    "DIV_enco": {"pos": "배당 실적이 주주 친화 경영을 증명합니다.", "neg": "배당 도입을 통해 지배구조 점수를 보완할 수 있습니다."},
+    "DIR_FE_enco": {"pos": "여성 임원 선임은 거버넌스 선진화의 신호입니다.", "neg": "여성 임원 선임을 통해 이사회 다양성을 확보하세요."},
+    "ESG_lag": {
+        "pos": "과거의 우수한 ESG 경영 성과가 현재 등급을 견고하게 지지하고 있습니다.",
+        "neg": "과거의 낮은 등급이 현재 평가에 하방 압력을 주고 있습니다. 구조적 혁신이 필요합니다."
+    },
+    "A_SIZE_FOR_inter": {
+        "pos": "기업 규모와 외국인 투자자의 감시 체계가 시너지를 내어 지배구조 점수를 높이고 있습니다.",
+        "neg": "자산 규모 대비 외국인 투자자의 긍정적 영향력이 충분히 발휘되지 못하고 있습니다."
+    }
+
+}
+
+
+# [제안 생성 함수]
+def make_shap_based_advice(tmp_df, model_in, advice_dict, top_k=3):
+    results = {"pos": [], "neg": []}
+    for _, row in tmp_df.iterrows():
+        feat = str(row["feature"]).strip()
+        if feat in advice_dict:
+            val = model_in.iloc[0][feat] if feat in model_in.columns else None
+            # SHAP 값이 양수면 pos, 음수면 neg
+            if row["shap"] > 0:
+                if len(results["pos"]) < top_k:
+                    results["pos"].append({"feature": feat, "value": val, "text": advice_dict[feat]["pos"]})
+            else:
+                if len(results["neg"]) < top_k:
+                    results["neg"].append({"feature": feat, "value": val, "text": advice_dict[feat]["neg"]})
+    return results
+# --------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
 # --------------------------------------------------------------------------------
 # 1. PAGE CONFIGURATION
 # --------------------------------------------------------------------------------
@@ -151,6 +210,10 @@ def load_models():
         models['cls_select'] = joblib.load(os.path.join(base_dir, 'esg_model_classifier_select.pkl'))
         models['final'] = joblib.load(os.path.join(base_dir, 'esg_model_classifier_final_depth7.pkl'))
         
+        # 확장형 모델 로드
+        models['ext_model'] = joblib.load(os.path.join(base_dir, 'xgb_model_ext.pkl'))
+        models['ext_scaler'] = joblib.load(os.path.join(base_dir, 'scaler_ext.pkl'))
+
     except Exception as e:
         # 에러 발생 시 화면에 붉은 박스로 표시 (매우 중요!)
         st.error(f"모델 로딩 실패: {e}")
@@ -623,7 +686,13 @@ with tab_pred:
 
         with sub_sim:
             st.info("📊 각 지표의 평균값(Mean)으로 초기화된 상태에서 시뮬레이션을 시작합니다.")
-            
+# ----------------------------------------------------------------------------------------            
+            # 1. 모델 선택 UI 추가
+            model_choice = st.radio("🎯 분석 모델 선택", ["기본 모델 (19개)", "확장형 모델 (21개 - 전년도 ESG등급 필요)"], horizontal=True)
+            is_extended = "확장형" in model_choice
+# ----------------------------------------------------------------------------------------
+
+
             defaults = X_adv.mean()
             # 15 Features Requested
             req_feats = ['SGAE_R', 'Fe_R', 'Re_R', 'SA', 'Pay_Gap', 'W_YEAR', 'TQ', 'SGR', 'MSE', 'FOR', 'DIV', 'DIR_FE', 'LEV', 'ROA', 'DIR_OUT']
@@ -634,6 +703,7 @@ with tab_pred:
                 inputs = {}
                 cols = st.columns(4)
                 
+                # [기본 19개 변수 입력 그리드]
                 idx = 0
                 for c in X_adv.columns:
                     # Skip IND_
@@ -649,19 +719,57 @@ with tab_pred:
                             val = float(defaults[c])
                             inputs[c] = st.number_input(c, value=val)
                     idx += 1
-                
                 inds = [c.replace('IND_', '') for c in X_adv.columns if c.startswith('IND_')]
                 sel_ind = st.selectbox("산업군", inds)
+
+
+# ----------------------------------------------------------------------------------------
+                # 2. 확장형 변수 입력 필드 추가
+                esg_lag_val = 0
+                if is_extended:
+                    st.divider()
+                    st.subheader("확장 변수 설정")
+                    lag_col1, lag_col2 = st.columns(2)
+                    with lag_col1:
+                        # 전년도 등급을 숫자로 매핑 (기존 매핑 활용)
+                        lag_label = st.selectbox("전년도 ESG 등급 (ESG_lag)", ["S", "A+", "A", "B+", "B", "C", "D"], index=2)
+                        esg_mapping_rev = {"S": 7, "A+": 6, "A": 5, "B+": 4, "B": 3, "C": 2, "D": 1}
+                        esg_lag_val = esg_mapping_rev[lag_label]
+                    with lag_col2:
+                        # 상호작용 변수는 자동 계산됨을 안내
+                        st.info(f"**상호작용 변수 자동 계산**: A_SIZE × FOR")
+
+# ----------------------------------------------------------------------------------------                
                 
                 btn_run = st.form_submit_button("시뮬레이션 실행")
             
             if btn_run:
+ # ----------------------------------------------------------------------------------------               
+                # 3. 모델 선택 로직
+                if is_extended:
+                    current_model = models.get('ext_model')
+                    # 확장형은 앙상블이 아닌 단일 모델일 수 있으므로 구조 대응
+                    explainer_model = current_model
+                    scaler_obj = models.get('ext_scaler')
+                else:
+                    current_model = models['final']
+                    explainer_model = current_model.estimators[-1]['model']
+                    scaler_obj = current_model.estimators[-1]['scaler']
+# ----------------------------------------------------------------------------------------
+
                 sim_df = pd.DataFrame([inputs])
                 model_in = pd.DataFrame(0, index=[0], columns=X_adv.columns)
                 for c in X_adv.columns:
                     if c in sim_df: model_in[c] = sim_df[c]
                     if c == f"IND_{sel_ind}": model_in[c] = 1
-                
+# ----------------------------------------------------------------------------------------                
+                # ✅ 확장 변수 추가 로직
+                if is_extended:
+                    model_in["ESG_lag"] = esg_lag_val
+                    model_in["A_SIZE_FOR_inter"] = float(inputs["A_SIZE"]) * float(inputs["FOR"])
+# ----------------------------------------------------------------------------------------
+
+
                 prob = final_model.predict_proba(model_in)[0]
                 curr_idx = np.argmax(prob)
                 curr_grade = le.inverse_transform([curr_idx])[0]
@@ -677,49 +785,169 @@ with tab_pred:
                     fig_radar.update_layout(polar=dict(radialaxis=dict(visible=True)), height=400)
                     st.plotly_chart(fig_radar, use_container_width=True)
                 
-                st.markdown("### 🤖 AI Improvement Strategy")
+                # st.markdown("### 🤖 AI Improvement Strategy")
                 
-                hierarchy = ['D', 'C', 'B', 'B+', 'A', 'A+', 'S']
-                valid_hierarchy = [g for g in hierarchy if g in le.classes_]
+                # hierarchy = ['D', 'C', 'B', 'B+', 'A', 'A+', 'S']
+                # valid_hierarchy = [g for g in hierarchy if g in le.classes_]
                 
-                if curr_grade in valid_hierarchy:
-                    current_rank = valid_hierarchy.index(curr_grade)
-                    if current_rank < len(valid_hierarchy) - 1:
-                        target_grade = valid_hierarchy[current_rank + 1]
-                        target_idx = le.transform([target_grade])[0]
+                # if curr_grade in valid_hierarchy:
+                #     current_rank = valid_hierarchy.index(curr_grade)
+                #     if current_rank < len(valid_hierarchy) - 1:
+                #         target_grade = valid_hierarchy[current_rank + 1]
+                #         target_idx = le.transform([target_grade])[0]
                         
-                        st.write(f"**Goal: {curr_grade} $\\rightarrow$ {target_grade}** 달성을 위한 주요 변수 제안")
+                #         st.write(f"**Goal: {curr_grade} $\\rightarrow$ {target_grade}** 달성을 위한 주요 변수 제안")
                         
-                        advice = []
-                        base_prob = prob[target_idx]
+                #         advice = []
+                #         base_prob = prob[target_idx]
                         
-                        for f in req_feats:
-                            if f not in inputs: continue
-                            temp_in = model_in.copy()
-                            val = temp_in.loc[0, f]
-                            if f in binary_cols: continue
+                #         for f in req_feats:
+                #             if f not in inputs: continue
+                #             temp_in = model_in.copy()
+                #             val = temp_in.loc[0, f]
+                #             if f in binary_cols: continue
                             
-                            delta = val * 0.1 if val != 0 else 0.01
+                #             delta = val * 0.1 if val != 0 else 0.01
                             
-                            temp_in.loc[0, f] = val + delta
-                            p_up = final_model.predict_proba(temp_in)[0][target_idx]
+                #             temp_in.loc[0, f] = val + delta
+                #             p_up = final_model.predict_proba(temp_in)[0][target_idx]
                             
-                            temp_in.loc[0, f] = val - delta
-                            p_down = final_model.predict_proba(temp_in)[0][target_idx]
+                #             temp_in.loc[0, f] = val - delta
+                #             p_down = final_model.predict_proba(temp_in)[0][target_idx]
                             
-                            if f == 'LEV':
-                                if p_down > base_prob: advice.append((f, "감소(-)", (p_down - base_prob)*100))
-                            elif f in ['Pay_Gap', 'Fe_R']:
-                                if val < 0 and p_up > base_prob: advice.append((f, "증가(+)", (p_up - base_prob)*100))
-                                elif val > 0 and p_down > base_prob: advice.append((f, "감소(-)", (p_down - base_prob)*100))
-                            else:
-                                if p_up > base_prob: advice.append((f, "증가(+)", (p_up - base_prob)*100))
+                #             if f == 'LEV':
+                #                 if p_down > base_prob: advice.append((f, "감소(-)", (p_down - base_prob)*100))
+                #             elif f in ['Pay_Gap', 'Fe_R']:
+                #                 if val < 0 and p_up > base_prob: advice.append((f, "증가(+)", (p_up - base_prob)*100))
+                #                 elif val > 0 and p_down > base_prob: advice.append((f, "감소(-)", (p_down - base_prob)*100))
+                #             else:
+                #                 if p_up > base_prob: advice.append((f, "증가(+)", (p_up - base_prob)*100))
                                 
-                        advice.sort(key=lambda x: x[2], reverse=True)
-                        if advice:
-                            for f, direct, gain in advice[:3]:
-                                st.markdown(f"- **{f}** {direct}: 확률 **+{gain:.2f}%p** 상승 예상")
-                        else:
-                            st.info("현재 변수 조정으로는 유의미한 등급 상승 확률을 찾기 어렵습니다.")
+                #         advice.sort(key=lambda x: x[2], reverse=True)
+                #         if advice:
+                #             for f, direct, gain in advice[:3]:
+                #                 st.markdown(f"- **{f}** {direct}: 확률 **+{gain:.2f}%p** 상승 예상")
+                #         else:
+                #             st.info("현재 변수 조정으로는 유의미한 등급 상승 확률을 찾기 어렵습니다.")
+                #     else:
+                #         st.success("이미 최고 등급입니다!")
+
+
+
+            
+            if btn_run:
+
+# ----------------------------------------------------------------------------------------
+                # --- [A] 사용자가 선택한 모드에 따라 모델과 저울(Scaler) 바구니 채우기 ---
+                if is_extended:
+                    # 확장형 선택 시: 확장형 전용 모델과 저울 사용
+                    current_model = models.get('ext_model')
+                    scaler_obj = models.get('ext_scaler') 
+                    explainer_model = current_model # SHAP 분석용 모델
+                else:
+                    # 기본형 선택 시: 기본형의 앙상블 모델 중 마지막 저울과 모델 꺼내기
+                    current_ensemble = models['final']
+                    scaler_obj = current_ensemble.estimators[-1]['scaler']
+                    explainer_model = current_ensemble.estimators[-1]['model']
+# ----------------------------------------------------------------------------------------                
+                
+                
+                # 1. 예측 실행
+                sim_df = pd.DataFrame([inputs])
+                model_in = pd.DataFrame(0, index=[0], columns=X_adv.columns)
+                for c in X_adv.columns:
+                    if c in sim_df: model_in[c] = sim_df[c]
+                    if c == f"IND_{sel_ind}": model_in[c] = 1
+
+# ----------------------------------------------------------------------------------------               
+                # ✅ 확장형 모델일 때만 신규 변수 2개 추가
+
+                if is_extended:
+                    model_in["ESG_lag"] = esg_lag_val
+                    model_in["A_SIZE_FOR_inter"] = float(inputs["A_SIZE"]) * float(inputs["FOR"])
+
+
+                # 스케일러가 알고 있는 순서대로 정렬 후 변환
+                model_in_aligned = model_in.reindex(columns=scaler_obj.feature_names_in_, fill_value=0)
+                X_scaled = scaler_obj.transform(model_in_aligned)
+
+# ----------------------------------------------------------------------------------------
+
+                prob = final_model.predict_proba(model_in)[0]
+                curr_idx = np.argmax(prob)
+                curr_grade = le.inverse_transform([curr_idx])[0]
+
+                # 2. 결과 레이아웃 (기존 메트릭 등)
+                st.metric("Simulated Grade", curr_grade)
+
+
+# -----------------------------------------------------------------------------------------
+# ---------------------------------------------------------
+                # 4. SHAP 분석 (모델에 따라 19개 vs 21개 자동 전환)
+                # ---------------------------------------------------------
+                st.divider()
+                st.subheader("🔎 SHAP 기반 상세 분석")
+                
+                try:
+                    explainer = shap.TreeExplainer(explainer_model)
+                    shap_values = explainer.shap_values(X_scaled)
+                    
+                    if isinstance(shap_values, list):
+                        vals_for_class = shap_values[curr_idx][0, :]
                     else:
-                        st.success("이미 최고 등급입니다!")
+                        vals_for_class = shap_values[0, :, curr_idx]
+
+                    # 💡 핵심: 산업군(IND_)만 제외하면, 나머지는 모델이 가진 피처(19개 또는 21개)가 자동으로 남음!
+                    feature_names = list(scaler_obj.feature_names_in_)
+                    non_ind_indices = [i for i, name in enumerate(feature_names) if not name.startswith("IND_")] 
+                    
+                    new_values = np.array([vals_for_class[i] for i in non_ind_indices], dtype=np.float64)
+                    new_feature_names = [feature_names[i] for i in non_ind_indices]
+                    new_data = np.array([round(float(model_in_aligned.iloc[0][feature_names[i]]), 2) for i in non_ind_indices], dtype=np.float64)
+
+                    base_val = explainer.expected_value
+                    if isinstance(base_val, (list, np.ndarray)):
+                        base_val = base_val[curr_idx]
+                    
+                    exp = shap.Explanation(
+                        values=new_values,
+                        base_values=float(base_val),
+                        data=new_data,
+                        feature_names=new_feature_names
+                    )
+
+                    with st.expander(f"📝 {model_choice} 상세 분석 Waterfall", expanded=True):
+                        import platform
+                        plt.rcParams['axes.unicode_minus'] = False 
+                        font_name = "Malgun Gothic" if platform.system() == "Windows" else "NanumGothic"
+                        plt.rc('font', family=[font_name, "DejaVu Sans"])
+
+                        total_features = len(new_values)
+                        fig, ax = plt.subplots(figsize=(10, 0.6 * total_features + 2))
+                        shap.plots.waterfall(exp, show=False, max_display=total_features)
+                        plt.title(f"{curr_grade} 등급 판정 핵심 요인 (변수 {total_features}개)", fontsize=15, pad=30)
+                        st.pyplot(fig)
+                        plt.close(fig)
+
+                    # ---------------------------------------------------------
+                    # 5. 전략 제안 자동 생성
+                    # ---------------------------------------------------------
+                    st.subheader("💡 AI 맞춤형 전략 처방")
+                    tmp_analysis_df = pd.DataFrame({"feature": new_feature_names, "shap": new_values})
+                    tmp_analysis_df["abs_shap"] = tmp_analysis_df["shap"].abs()
+                    tmp_analysis_df = tmp_analysis_df.sort_values("abs_shap", ascending=False)
+                    
+                    advice_pack = make_shap_based_advice(tmp_analysis_df, model_in, STRATEGIC_ADVICE, top_k=3)
+                    
+                    col_pos, col_neg = st.columns(2)
+                    with col_pos:
+                        st.markdown("##### ✅ 유지 및 강화 전략")
+                        for item in advice_pack["pos"]:
+                            st.success(f"**{item['feature']}**: {item['text']}")
+                    with col_neg:
+                        st.markdown("##### ⚠️ 개선 및 보완 전략")
+                        for item in advice_pack["neg"]:
+                            st.warning(f"**{item['feature']}**: {item['text']}")
+
+                except Exception as e:
+                    st.error(f"SHAP 분석 중 오류 발생: {e}")
