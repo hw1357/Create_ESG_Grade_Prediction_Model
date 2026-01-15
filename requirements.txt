@@ -10,3 +10,4 @@ scikit-learn
 xgboost>=2.0.0
 lightgbm
 koreanize-matplotlib
+setuptools
