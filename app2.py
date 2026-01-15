@@ -142,12 +142,20 @@ def load_data_advanced():
 def load_models():
     models = {}
     try:
-        models['reg_fin'] = joblib.load('esg_model_regression_fin.pkl')
-        models['scaler_reg_fin'] = joblib.load('esg_scaler_regression_fin.pkl')
-        models['cls_select'] = joblib.load('esg_model_classifier_select.pkl')
-        models['final'] = joblib.load('esg_model_classifier_final_depth7.pkl')
-    except Exception:
-        pass 
+        # 파일 경로 확인
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        
+        # 모델 로드
+        models['reg_fin'] = joblib.load(os.path.join(base_dir, 'esg_model_regression_fin.pkl'))
+        models['scaler_reg_fin'] = joblib.load(os.path.join(base_dir, 'esg_scaler_regression_fin.pkl'))
+        models['cls_select'] = joblib.load(os.path.join(base_dir, 'esg_model_classifier_select.pkl'))
+        models['final'] = joblib.load(os.path.join(base_dir, 'esg_model_classifier_final_depth7.pkl'))
+        
+    except Exception as e:
+        # 에러 발생 시 화면에 붉은 박스로 표시 (매우 중요!)
+        st.error(f"모델 로딩 실패: {e}")
+        st.info("requirements.txt의 scikit-learn 버전을 확인하거나, pkl 파일이 깃허브에 잘 올라갔는지 확인하세요.")
+        
     return models
 
 df_basic = load_data_basic()
