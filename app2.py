@@ -918,14 +918,29 @@ with tab_pred:
                     )
 
                     with st.expander(f"📝 {model_choice} 상세 분석 Waterfall", expanded=True):
-                        # [FIX] Korean Font and Minus Sign Fix
+                        # [핵심 수정] 마이너스 부호 설정을 가장 강력하게 적용
+                        import matplotlib.pyplot as plt
                         import koreanize_matplotlib
-                        plt.rcParams['axes.unicode_minus'] = False 
+
+                        # 1. 마이너스 부호 깨짐 방지 (반드시 False여야 함)
+                        plt.rcParams['axes.unicode_minus'] = False
                         
+                        # 2. 폰트 재설정 (혹시 모를 설정 덮어쓰기 방지)
+                        # NanumGothic이 없으면 기본 한글 폰트로 대체하도록 설정
+                        plt.rcParams['font.family'] = ['NanumGothic', 'Malgun Gothic', 'AppleGothic', 'sans-serif']
+
                         total_features = len(new_values)
+                        
+                        # 3. Figure 객체 명시적 생성
                         fig, ax = plt.subplots(figsize=(10, 0.6 * total_features + 2))
+                        
+                        # 4. SHAP 그래프 그리기
                         shap.plots.waterfall(exp, show=False, max_display=total_features)
+                        
+                        # 5. 타이틀 설정
                         plt.title(f"{curr_grade} 등급 판정 핵심 요인 (변수 {total_features}개)", fontsize=15, pad=30)
+                        
+                        # 6. Streamlit에 출력
                         st.pyplot(fig)
                         plt.close(fig)
 
