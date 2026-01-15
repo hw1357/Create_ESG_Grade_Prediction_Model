@@ -912,7 +912,7 @@ with tab_pred:
                         feature_names=new_feature_names
                     )
 
-                    with st.expander(f"📝 {pred_grade} 상세 분석 Waterfall", expanded=True):
+                    with st.expander(f"📝 {model_choice} 상세 분석 Waterfall", expanded=True):
                         # 1. 한글 패치 및 시각화 라이브러리 설정
                         import koreanize_matplotlib
                         import matplotlib.pyplot as plt
@@ -938,7 +938,7 @@ with tab_pred:
                         shap.plots.waterfall(exp, show=False, max_display=10)
                         
                         # 타이틀 설정
-                        plt.title(f"{pred_grade} 등급 판정 핵심 요인 (변수 {total_features}개)", fontsize=15, pad=30)
+                        plt.title(f"{model_choice} 등급 판정 핵심 요인 (변수 {total_features}개)", fontsize=15, pad=30)
                         
                         # 4. 스트림릿에 출력
                         st.pyplot(fig)
