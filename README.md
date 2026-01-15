@@ -56,10 +56,10 @@
 3. **기업 컨설팅**: 등급 상승을 위한 구체적인 개선 지표(여성 임원 비율 등) 제안
 
 ## 7. 대시보드 (Dashboard)
+* **사이트:** [바로가기 클릭](https://createesggradepredictionmodel-awz4b6kpfrpprldn7stphm.streamlit.app/)
 ![streamlit_video (2)](https://github.com/user-attachments/assets/4797c60d-2bec-4e01-aa9d-194c786d7010)
 ![streamlit_video (3)](https://github.com/user-attachments/assets/e41028d7-1dd6-4b6c-ad2a-e03fc1bd1260)
 [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://createesggradepredictionmodel-awz4b6kpfrpprldn7stphm.streamlit.app/)
-* **사이트:** [바로가기 클릭](https://createesggradepredictionmodel-awz4b6kpfrpprldn7stphm.streamlit.app/)
 
 ---
 #### 자세한 분석 과정과 코드는 상단의 `.ipynb` 파일 또는 첨부된 [PDF 포트폴리오](./PARK_Portfolio.pdf)를 참고해 주세요.
