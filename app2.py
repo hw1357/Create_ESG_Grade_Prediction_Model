@@ -877,10 +877,6 @@ with tab_pred:
                 curr_idx = np.argmax(prob)
                 curr_grade = le.inverse_transform([curr_idx])[0]
 
-                # 2. 결과 레이아웃 (기존 메트릭 등)
-                st.metric("Simulated Grade", curr_grade)
-
-
 # -----------------------------------------------------------------------------------------
 # ---------------------------------------------------------
                 # 4. SHAP 분석 (모델에 따라 19개 vs 21개 자동 전환)
@@ -917,14 +913,17 @@ with tab_pred:
                     )
 
                     with st.expander(f"📝 {model_choice} 상세 분석 Waterfall", expanded=True):
-                        import platform
+                        # [수정됨] 복잡한 폰트 설정 제거 -> 라이브러리로 자동 해결
+                        import koreanize_matplotlib
+                        
+                        # 마이너스 기호 깨짐 방지 (koreanize_matplotlib가 처리하지만 명시적으로 안전장치)
                         plt.rcParams['axes.unicode_minus'] = False 
-                        font_name = "Malgun Gothic" if platform.system() == "Windows" else "NanumGothic"
-                        plt.rc('font', family=[font_name, "DejaVu Sans"])
 
                         total_features = len(new_values)
                         fig, ax = plt.subplots(figsize=(10, 0.6 * total_features + 2))
                         shap.plots.waterfall(exp, show=False, max_display=total_features)
+                        
+                        # 이제 한글 타이틀이 정상적으로 보입니다
                         plt.title(f"{curr_grade} 등급 판정 핵심 요인 (변수 {total_features}개)", fontsize=15, pad=30)
                         st.pyplot(fig)
                         plt.close(fig)
