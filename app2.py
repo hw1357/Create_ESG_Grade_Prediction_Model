@@ -445,7 +445,7 @@ with tab_cls:
     <div class="info-box">
     <b>모델 전환 전략:</b><br>
     회귀분석의 한계를 극복하기 위해 <b>다중 분류(Multi-Class Classification)</b>로 문제를 재정의하였습니다.<br>
-    5개 알고리즘에 대해 <b>3년 롤링 윈도우 앙상블</b>을 적용하여 ROC-AUC를 비교 분석하였습니다.
+    5개 알고리즘에 대해 <b>3년 롤링 윈도우를</b>을 적용하여 ROC-AUC를 비교 분석하였습니다.
     </div>
     """, unsafe_allow_html=True)
     
@@ -748,7 +748,7 @@ with tab_pred:
                 # 3. 모델 선택 로직
                 if is_extended:
                     current_model = models.get('ext_model')
-                    # 확장형은 앙상블이 아닌 단일 모델일 수 있으므로 구조 대응
+                    # 확장형은 롤링 윈도우가 아닌 단일 모델일 수 있으므로 구조 대응
                     explainer_model = current_model
                     scaler_obj = models.get('ext_scaler')
                 else:
@@ -850,7 +850,7 @@ with tab_pred:
                     scaler_obj = models.get('ext_scaler') 
                     explainer_model = current_model # SHAP 분석용 모델
                 else:
-                    # 기본형 선택 시: 기본형의 앙상블 모델 중 마지막 저울과 모델 꺼내기
+                    # 기본형 선택 시: 기본형의 롤링 윈도우 모델 중 마지막 저울과 모델 꺼내기
                     current_ensemble = models['final']
                     scaler_obj = current_ensemble.estimators[-1]['scaler']
                     explainer_model = current_ensemble.estimators[-1]['model']
@@ -917,7 +917,7 @@ with tab_pred:
                         feature_names=new_feature_names
                     )
 
-                    with st.expander(f"📝 {model_choice} 상세 분석 Waterfall", expanded=True):
+                    with st.expander(f"📝 {model_choice} 상세 분석 SHAP", expanded=True):
                         # [핵심 수정] 마이너스 부호 설정을 가장 강력하게 적용
                         import matplotlib.pyplot as plt
                         import koreanize_matplotlib
