@@ -307,9 +307,9 @@ with tab_overview:
         st.markdown("### 🏆 Performance Milestone")
         st.write("") 
         milestone_df = pd.DataFrame({
-            "Stage": ["Previous Research", "Initial Regression", "Advanced Regression", "Final Classification"],
-            "Metric": ["R² Score", "R² Score", "R² Score", "ROC-AUC"],
-            "Score": [0.225, 0.440, 0.585, 0.829]
+            "Stage": ["Previous Research", "Initial Regression", 'Plus Regression', "Advanced Regression", 'Base Classification', "Final Classification"],
+            "Metric": ["R² Score", "R² Score", 'R² Score', "R² Score", "ROC-AUC", "ROC-AUC"],
+            "Score": [0.225, 0.440, 0.585, 0.664, 0.800, 0.829]
         })
         st.table(milestone_df.style.format({"Score": "{:.3f}"}).set_properties(**{'text-align': 'center', 'font-size': '16px'}))
         
@@ -585,7 +585,15 @@ with tab_final:
 
         with sub_shap:
             st.markdown("#### SHAP Beeswarm Analysis")
-            st.info("변수가 등급 예측에 미치는 긍정(우측)/부정(좌측) 영향을 시각화합니다. (IND_ 변수 제외)")
+            st.info(
+                    "SHAP_Analysis: AI가 왜 이런 결과를 냈는지, "
+                    "어떤 항목이 결과에 가장 큰 영향을 줬는지를 보여줍니다.\n\n"
+                    "📊 그래프 읽는 법\n"
+                    "• 위에 있을수록 결과에 더 중요한 항목입니다\n"
+                    "• 오른쪽일수록 결과를 높이는 영향, 왼쪽일수록 낮추는 영향입니다\n"
+                    "• 점이 많을수록 해당 사례가 자주 나타난다는 의미입니다"
+                    )
+
             
             try:
                 X_sample = X_adv.sample(min(100, len(X_adv)))
