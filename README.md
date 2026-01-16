@@ -30,7 +30,7 @@
 ### 4-1. Base Model (다중회귀분석)
 ![Correlation Heatmap](heatmap.png)
 * **결과**: 설명력($R^2$) **0.440** 달성 (기존 논문 대비 약 2배 성능 향상)
-* **X_features 추가**: 설명력($R^2$) **0.5717** 달성
+* **X_features 추가**: 설명력($R^2$) **0.585** 달성
 * **한계**: $R^2$ 점수의 정체 및 회귀 분석의 한계점 도달 확인 (Learning Curve 분석)
 ![Learning_Curve](Learning_Curve.png)
 
@@ -45,7 +45,7 @@
 ![Shap (2)](Shap(2).png)
 
 ## 5. 핵심 성과 (Results)
-* **최종 성능**: **ROC-AUC 0.823** 달성 (Base Model 대비 0.3 향상)
+* **최종 성능**: **ROC-AUC 0.829** 달성 (Base Model 대비 0.3 향상)
 * **인사이트**:
     * 단순 재무 지표 외에 비재무적(정성적) 요소 변수의 중요성 확인
     * 자산 규모, 외국인 지분율 등이 ESG 등급에 주요한 양(+)의 상관관계 확인
