@@ -62,7 +62,7 @@
 ![streamlit_video (3)](https://github.com/user-attachments/assets/e41028d7-1dd6-4b6c-ad2a-e03fc1bd1260)
 
 ---
-#### 자세한 분석 과정과 코드는 상단의 `.ipynb` 파일 또는 첨부된 [PDF 포트폴리오](./PARK_Portfolio.pdf)를 참고해 주세요.
+#### 자세한 분석 과정과 코드는 상단의 `.ipynb` 파일 또는 첨부된 [PDF 포트폴리오(박현우)](./PARK_Portfolio.pdf), [PDF 포트폴리오(민선아)](<./Min Sun-ah Data Analyst Portfolio.pdf>)를 참고해 주세요.
 ---
 ## 확장형 고도화 모델 (Extended Model) by 민선아 (@Manyong1204)
 기본 모델의 19개 변수에 **경영 관성 및 지표 간 상호작용**을 반영한 2개 변수를 추가하여 성능을 개선한 버전입니다. 
