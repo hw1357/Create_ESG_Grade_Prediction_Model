@@ -586,7 +586,7 @@ with tab_final:
         with sub_shap:
             st.markdown("#### SHAP Beeswarm Analysis")
             st.info(
-                    "SHAP_Analysis: AI가 왜 이런 결과를 냈는지,"
+                    "SHAP_Analysis: AI가 왜 이런 결과를 냈는지, "
                     "어떤 항목이 결과에 가장 큰 영향을 줬는지를 보여줍니다.\n\n"
                     '\n\n'
                     "📊 그래프 읽는 법\n\n"
