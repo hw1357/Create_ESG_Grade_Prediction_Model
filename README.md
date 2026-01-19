@@ -14,7 +14,7 @@
 ## 2. 사용 기술 (Tech Stack)
 * **Language**: Python
 * **Data Handling**: Pandas, NumPy
-* **Visualization**: Matplotlib, Seaborn
+* **Visualization**: Matplotlib, Seaborn, Streamlit
 * **Machine Learning**: Scikit-learn, Linear, Logistic, XGBoost, LightGBM, Random Forest, SVM
 * **Environment**: Jupyter Notebook
 
